@@ -1,8 +1,11 @@
 import { useContext, useMemo } from "react";
 import { Context } from "../context";
 import  Firestore  from "../handlers/firestore"
+import Storage from "../handlers/storage";
 
 const { writeDoc }=Firestore
+
+const { uploadFile,downloadFile } =Storage
 
 const Preview =()=>{
    const {state} =useContext(Context)
@@ -28,17 +31,23 @@ const UploadForm = () => {
   const hanldeChange=(e)=>{ dispatch({type :"setInputs",payload: {value: e}})}
   const handleSubmit=(e)=>{
     e.preventDefault()
-    writeDoc(inputs,"stocks").then(console.log)
+    uploadFile(state.inputs).then(downloadFile).then(url=>{
+    writeDoc({...inputs,path: url},"stocks").then(()=>{
     // setItems([inputs.path,...items]) 
-    dispatch({type: 'setItem'})
-    // setInputs({title:null,file:null,path:null})
-    dispatch({type:"collapse",payload:{bool:false}})
+        dispatch({type: 'setItem'})
+        // setInputs({title:null,file:null,path:null})
+        dispatch({type:"collapse",payload:{bool:false}})
+
+    })
+   
+    })
+    
 
   }
 
     const isDisabled=useMemo(()=>{
         return !!Object.values(state.inputs).some(input=> !input)
-    },[inputs])
+    },[state.inputs])
   return (
     state.isCollapsed && <>
       <p className="display-6 text-center mb-3">Upload Stock Image</p>
