@@ -6,12 +6,12 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyByOWel-x_2R4JKCIE-iyahr2u5X_rIDeI",
-  authDomain: "exhibitopia.firebaseapp.com",
-  projectId: "exhibitopia",
-  storageBucket: "exhibitopia.appspot.com",
-  messagingSenderId: "936767493561",
-  appId: "1:936767493561:web:be1a1ed06eea323905d268"
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAINE,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID
 };
 
 // Initialize Firebase

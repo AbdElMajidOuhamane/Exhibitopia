@@ -7,11 +7,9 @@ import { Context } from './context';
 import Firestore from './handlers/firestore';
 
 
-const { readDocs }=Firestore
-
 function App() {
   
-  const {state}=useContext(Context)
+  const {state,read}=useContext(Context)
 
 
   const counts=useMemo(()=>{
@@ -19,7 +17,7 @@ function App() {
   },[state.items])
 
   useEffect(() => {
-    readDocs().then(console.log)
+    read()
   }, [])
 
 
