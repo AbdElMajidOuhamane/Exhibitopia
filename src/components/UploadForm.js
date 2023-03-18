@@ -1,17 +1,19 @@
 import { useContext, useMemo } from "react";
 import { Context } from "../context";
+import  Firestore  from "../handlers/firestore"
 
+const { writeDoc }=Firestore
 
 const Preview =()=>{
    const {state} =useContext(Context)
-   const {inputs}=state
+   const { inputs :{ path } }= state
     return(
-        inputs.path &&
+        path &&
         <div className="rounded p-1 m-5"
         style={{
             width:"30%",
             height:"300px",
-            backgroundImage:`url(${inputs.path})`,
+            backgroundImage:`url(${path})`,
             backgroundSize:"cover"
         }}
         >
@@ -22,10 +24,11 @@ const Preview =()=>{
 
 const UploadForm = () => {
     const {state,dispatch} =useContext(Context)
-
-   const hanldeChange=(e)=>{ dispatch({type :"setInputs",payload: {value: e}})}
+    const { isCollapsed : isVisible, inputs  } = state ;
+  const hanldeChange=(e)=>{ dispatch({type :"setInputs",payload: {value: e}})}
   const handleSubmit=(e)=>{
     e.preventDefault()
+    writeDoc(inputs,"stocks").then(console.log)
     // setItems([inputs.path,...items]) 
     dispatch({type: 'setItem'})
     // setInputs({title:null,file:null,path:null})
@@ -35,7 +38,7 @@ const UploadForm = () => {
 
     const isDisabled=useMemo(()=>{
         return !!Object.values(state.inputs).some(input=> !input)
-    },[state.inputs])
+    },[inputs])
   return (
     state.isCollapsed && <>
       <p className="display-6 text-center mb-3">Upload Stock Image</p>
